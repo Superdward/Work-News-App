@@ -14,15 +14,6 @@ icon-512.svg    ← App icon (splash screen, large)
 
 ---
 
-## Deploying to GitHub Pages (free, 5 minutes)
-
-1. Create a new **public** repo on GitHub (e.g. `ut-digest`)
-2. Upload all 5 files to the repo root
-3. Go to **Settings → Pages → Source → Deploy from branch → main / root**
-4. Your app will be live at: `https://YOUR-USERNAME.github.io/ut-digest/`
-
----
-
 ## Installing on Android
 
 1. Open the URL in **Chrome**
