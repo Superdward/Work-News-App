@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1a10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="PO Digest" />
+  <meta name="description" content="Weekly product intelligence digest for digital account opening product owners" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.svg" />
+  <title>Product Intelligence · Weekly Digest</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+
+    :root {
+      --bg: #0a1410;
+      --bg2: #0f1a14;
+      --surface: rgba(255,255,255,0.03);
+      --surface2: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.08);
+      --green: #4a9e6b;
+      --green-dim: rgba(74,158,107,0.12);
+      --green-border: rgba(74,158,107,0.35);
+      --gold: #c8961a;
+      --gold-dim: rgba(200,150,26,0.08);
+      --gold-border: rgba(200,150,26,0.2);
+      --red: #d45a38;
+      --red-dim: rgba(212,90,56,0.08);
+      --red-border: rgba(212,90,56,0.2);
+      --text: #e0d8c8;
+      --text-dim: #8a9e8f;
+      --text-muted: #5a6e5f;
+      --mono: 'IBM Plex Mono', monospace;
+      --serif: 'Playfair Display', Georgia, serif;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      overflow-x: hidden;
+    }
+
+    body {
+      padding-top: var(--safe-top);
+      padding-bottom: var(--safe-bottom);
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(180deg, #061009 0%, var(--bg2) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 24px 20px 20px;
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .header-inner { max-width: 680px; margin: 0 auto; }
+    .header-eyebrow {
+      font-size: 9px; letter-spacing: 0.28em; color: var(--green);
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .header-title {
+      font-family: var(--serif); font-size: clamp(22px, 5vw, 32px);
+      font-weight: 400; color: #f0ebe0; letter-spacing: -0.02em; line-height: 1.1;
+    }
+    .header-sub {
+      font-size: 10px; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.05em;
+    }
+    .header-stamp {
+      font-size: 9px; color: var(--text-muted); margin-top: 2px; letter-spacing: 0.03em;
+    }
+
+    /* ── Main ── */
+    .main { max-width: 680px; margin: 0 auto; padding: 24px 16px 40px; }
+
+    /* ── Section label ── */
+    .section-label {
+      font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* ── Category grid ── */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .cat-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 12px;
+      cursor: pointer;
+      color: var(--text-dim);
+      text-align: left;
+      font-family: var(--mono);
+      font-size: 11px;
+      display: flex; align-items: center; gap: 8px;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      line-height: 1.3;
+      -webkit-user-select: none; user-select: none;
+    }
+    .cat-btn.on {
+      background: var(--green-dim);
+      border-color: var(--green-border);
+      color: #7ec89a;
+    }
+    .cat-btn .icon { font-size: 16px; flex-shrink: 0; }
+    .cat-btn .check { margin-left: auto; font-size: 9px; color: var(--green); flex-shrink: 0; }
+
+    /* ── Controls row ── */
+    .controls { display: flex; gap: 10px; margin-bottom: 24px; align-items: center; flex-wrap: wrap; }
+    .btn-ghost {
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 7px; padding: 8px 14px;
+      color: var(--text-dim); font-size: 10px; cursor: pointer;
+      font-family: var(--mono); letter-spacing: 0.06em;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+    .btn-generate {
+      background: linear-gradient(135deg, #2d6e47 0%, #4a9e6b 100%);
+      border: none; border-radius: 9px;
+      padding: 13px 24px;
+      color: #fff; font-size: 11px; cursor: pointer;
+      font-family: var(--mono); letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: opacity 0.2s, transform 0.1s;
+      flex: 1; min-width: 180px;
+    }
+    .btn-generate:disabled {
+      background: rgba(255,255,255,0.05);
+      color: #3a4e3f; cursor: not-allowed;
+    }
+    .btn-generate:not(:disabled):active { transform: scale(0.98); }
+    .est { font-size: 10px; color: var(--text-muted); }
+
+    /* ── Loading ── */
+    .loading {
+      text-align: center; padding: 60px 20px;
+    }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 2px solid rgba(74,158,107,0.15);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-label { color: var(--green); font-size: 12px; }
+    .loading-sub { color: var(--text-muted); font-size: 10px; margin-top: 6px; }
+    .progress-bar-wrap {
+      width: 200px; height: 2px; background: rgba(74,158,107,0.15);
+      border-radius: 2px; margin: 16px auto 0; overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%; background: var(--green); border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    /* ── Digest ── */
+    .digest-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 10px;
+    }
+    .digest-header h2 {
+      font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-muted); font-weight: 400;
+    }
+
+    .category-block {
+      margin-bottom: 36px;
+      border-left: 2px solid rgba(74,158,107,0.25);
+      padding-left: 16px;
+      animation: fadeUp 0.4s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cat-heading {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 10px;
+    }
+    .cat-heading span { font-size: 18px; }
+    .cat-heading h3 {
+      font-family: var(--serif); font-size: 16px;
+      font-weight: 400; color: #c8d8cc; letter-spacing: -0.01em;
+    }
+
+    .cat-summary {
+      font-size: 12px; color: var(--text-muted); line-height: 1.7;
+      font-style: italic; margin-bottom: 14px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+
+    .news-item {
+      border-radius: 9px; padding: 13px 14px; margin-bottom: 10px;
+    }
+    .news-item.high { background: var(--red-dim); border: 1px solid var(--red-border); }
+    .news-item.medium { background: var(--gold-dim); border: 1px solid var(--gold-border); }
+    .news-item.low { background: var(--green-dim); border: 1px solid var(--green-border); }
+
+    .news-item-top {
+      display: flex; gap: 10px; align-items: flex-start;
+      margin-bottom: 6px; justify-content: space-between;
+    }
+    .news-title { font-size: 13px; font-weight: 500; color: #ddd8cc; line-height: 1.35; font-family: var(--serif); }
+    .urgency-badge {
+      font-size: 8px; text-transform: uppercase; letter-spacing: 0.14em;
+      padding: 2px 6px; border-radius: 3px; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+    }
+    .urgency-badge.high { color: var(--red); background: rgba(212,90,56,0.12); }
+    .urgency-badge.medium { color: var(--gold); background: rgba(200,150,26,0.12); }
+    .urgency-badge.low { color: var(--green); background: rgba(74,158,107,0.12); }
+
+    .news-detail { font-size: 12px; color: var(--text-muted); line-height: 1.65; margin-bottom: 8px; }
+    .news-implication {
+      font-size: 11px; color: var(--green); line-height: 1.5;
+      display: flex; gap: 6px; align-items: flex-start;
+    }
+    .news-implication::before { content: '→'; flex-shrink: 0; }
+
+    .watchlist {
+      background: var(--gold-dim); border: 1px solid var(--gold-border);
+      border-radius: 9px; padding: 12px 14px; margin-top: 4px;
+    }
+    .watchlist-label {
+      font-size: 9px; text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--gold); margin-bottom: 8px;
+    }
+    .watchlist-item { font-size: 11px; color: #9a8a6a; line-height: 1.7; }
+    .watchlist-item::before { content: '· '; }
+
+    /* ── Error ── */
+    .error-box {
+      background: var(--red-dim); border: 1px solid var(--red-border);
+      border-radius: 9px; padding: 16px; font-size: 12px; color: var(--red);
+    }
+
+    /* ── Bottom nav spacing ── */
+    .bottom-space { height: 20px; }
+
+    /* ── Install banner ── */
+    .install-banner {
+      position: fixed; bottom: calc(16px + var(--safe-bottom)); left: 16px; right: 16px;
+      background: #1a2e20; border: 1px solid var(--green-border);
+      border-radius: 12px; padding: 14px 16px;
+      display: flex; align-items: center; gap: 12px;
+      z-index: 200; animation: slideUp 0.3s ease;
+      max-width: 640px; margin: 0 auto;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .install-text { flex: 1; font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+    .install-text strong { color: var(--green); display: block; margin-bottom: 2px; }
+    .install-btn {
+      background: var(--green); border: none; border-radius: 7px;
+      padding: 8px 14px; color: #fff; font-size: 10px;
+      font-family: var(--mono); cursor: pointer; white-space: nowrap;
+      letter-spacing: 0.06em;
+    }
+    .install-close {
+      background: none; border: none; color: var(--text-muted);
+      font-size: 16px; cursor: pointer; padding: 0 4px; line-height: 1;
+    }
+
+    @media (max-width: 400px) {
+      .cat-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">Product Intelligence</div>
+    <div class="header-title">The Weekly Digest</div>
+    <div class="header-sub">Digital Account Opening · SME Banking · Product Ownership</div>
+    <div class="header-stamp" id="stamp"></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Selector view -->
+  <div id="view-select">
+    <div class="section-label">
+      <span>Select topics</span>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-ghost" onclick="selectAll()">All</button>
+        <button class="btn-ghost" onclick="clearAll()">Clear</button>
+      </div>
+    </div>
+
+    <div class="cat-grid" id="cat-grid"></div>
+
+    <div class="controls">
+      <button class="btn-generate" id="btn-gen" onclick="generate()" disabled>
+        Generate digest
+      </button>
+      <span class="est" id="est-label"></span>
+    </div>
+  </div>
+
+  <!-- Loading view -->
+  <div id="view-loading" style="display:none;">
+    <div class="loading">
+      <div class="spinner"></div>
+      <div class="loading-label" id="loading-cat">Searching…</div>
+      <div class="loading-sub" id="loading-sub">Fetching latest intelligence</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Digest view -->
+  <div id="view-digest" style="display:none;">
+    <div class="digest-header">
+      <h2 id="digest-title">Your digest</h2>
+      <button class="btn-ghost" onclick="reset()">← New digest</button>
+    </div>
+    <div id="digest-content"></div>
+    <div class="bottom-space"></div>
+    <button class="btn-ghost" style="width:100%;text-align:center;padding:12px;" onclick="reset()">← Generate another digest</button>
+  </div>
+
+  <!-- Error -->
+  <div id="view-error" style="display:none;">
+    <div class="error-box" id="error-msg"></div>
+    <button class="btn-ghost" style="margin-top:16px;" onclick="reset()">← Try again</button>
+  </div>
+
+</div>
+
+<!-- Install banner -->
+<div class="install-banner" id="install-banner" style="display:none;">
+  <div class="install-text">
+    <strong>Install as app</strong>
+    Add to your home screen for quick access
+  </div>
+  <button class="install-btn" id="install-btn" onclick="installApp()">Install</button>
+  <button class="install-close" onclick="dismissInstall()">×</button>
+</div>
+
+<script>
+const CATEGORIES = [
+  { id: "banking",       label: "UK Banking & Fintech",        icon: "🏦", query: "UK banking fintech news 2026" },
+  { id: "onboarding",   label: "Digital Onboarding & UX",     icon: "🗺️", query: "digital account opening onboarding UX best practice 2026" },
+  { id: "ai_pm",        label: "AI for Product Management",   icon: "🤖", query: "AI product management tools innovation 2026" },
+  { id: "sme",          label: "SME & Commercial Banking",    icon: "🏢", query: "SME commercial banking UK trends 2026" },
+  { id: "regulatory",   label: "Regulatory & Compliance",     icon: "⚖️", query: "FCA consumer duty AML KYC open banking regulation UK 2026" },
+  { id: "fraud",        label: "Fraud, Security & Identity",  icon: "🔒", query: "APP fraud biometric identity verification onboarding UK 2026" },
+  { id: "accessibility",label: "Accessibility & Inclusion",   icon: "♿", query: "digital accessibility financial inclusion vulnerability UK banking 2026" },
+  { id: "ethical",      label: "Ethical & ESG Banking",       icon: "🌱", query: "ethical ESG green finance B Corp banking UK 2026" },
+  { id: "behaviour",    label: "Customer Behaviour",          icon: "📊", query: "SME customer behaviour digital banking conversion insights 2026" },
+  { id: "pm",           label: "Product Management Practice", icon: "⚙️", query: "product management methodology agile innovation 2026" },
+];
+
+const SYSTEM_PROMPT = `You are a specialist briefing assistant for a Product Owner focused on digital account opening journeys at a small, ethical UK commercial bank focused on supporting organisations that create positive social, community, and environmental impact.
+
+Produce a sharp, insightful news digest on a specific topic. For each item:
+- Focus on what's most relevant to a PO building digital onboarding journeys for UK SMEs and ethical organisations
+- Flag practical implications (e.g. "This could affect your KYC flow" or "Watch this for CASS implications")
+- Be concise and direct
+- Use a professional but not stuffy tone
+
+Return ONLY a JSON object (no markdown fences, no preamble) in this exact shape:
+{
+  "summary": "2-3 sentence overview of the landscape right now",
+  "items": [
+    {
+      "title": "Headline-style title",
+      "detail": "2-3 sentences of context and why it matters",
+      "implication": "One sentence on what this means for your work",
+      "urgency": "high|medium|low"
+    }
+  ],
+  "watchlist": ["short item 1", "short item 2", "short item 3"]
+}
+
+Return 4-6 items. Watchlist should be 3 things to monitor in coming weeks.`;
+
+let selected = new Set();
+
+// ── Render category grid ──
+function renderGrid() {
+  const grid = document.getElementById('cat-grid');
+  grid.innerHTML = '';
+  CATEGORIES.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (selected.has(cat.id) ? ' on' : '');
+    btn.innerHTML = `<span class="icon">${cat.icon}</span><span>${cat.label}</span>${selected.has(cat.id) ? '<span class="check">✓</span>' : ''}`;
+    btn.onclick = () => toggle(cat.id);
+    grid.appendChild(btn);
+  });
+  updateGenBtn();
+}
+
+function toggle(id) {
+  selected.has(id) ? selected.delete(id) : selected.add(id);
+  renderGrid();
+}
+function selectAll() { CATEGORIES.forEach(c => selected.add(c.id)); renderGrid(); }
+function clearAll() { selected.clear(); renderGrid(); }
+
+function updateGenBtn() {
+  const btn = document.getElementById('btn-gen');
+  const est = document.getElementById('est-label');
+  const n = selected.size;
+  btn.disabled = n === 0;
+  btn.textContent = n > 0 ? `Generate digest (${n} topic${n !== 1 ? 's' : ''})` : 'Generate digest';
+  est.textContent = n > 0 ? `~${n * 15}s` : '';
+}
+
+// ── Views ──
+function showView(v) {
+  ['select','loading','digest','error'].forEach(id => {
+    document.getElementById('view-' + id).style.display = id === v ? '' : 'none';
+  });
+}
+
+function reset() {
+  showView('select');
+  document.getElementById('digest-content').innerHTML = '';
+}
+
+// ── Stamp ──
+function updateStamp(d) {
+  const el = document.getElementById('stamp');
+  if (d) {
+    el.textContent = 'Generated ' + d.toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short', year:'numeric' })
+      + ' · ' + d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+  } else {
+    el.textContent = new Date().toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  }
+}
+
+// ── Generate ──
+async function generate() {
+  const cats = CATEGORIES.filter(c => selected.has(c.id));
+  if (!cats.length) return;
+
+  showView('loading');
+  const results = {};
+  let done = 0;
+
+  for (const cat of cats) {
+    document.getElementById('loading-cat').textContent = cat.icon + ' ' + cat.label;
+    document.getElementById('loading-sub').textContent = `${done + 1} of ${cats.length} topics`;
+    document.getElementById('progress-bar').style.width = (done / cats.length * 100) + '%';
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: SYSTEM_PROMPT,
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          messages: [{
+            role: 'user',
+            content: `Search for the latest news on: "${cat.label}". Query: "${cat.query}". Today: ${new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })}.`
+          }]
+        })
+      });
+      const data = await res.json();
+      const textBlocks = (data.content || []).filter(b => b.type === 'text');
+      const raw = textBlocks.map(b => b.text).join('');
+      const clean = raw.replace(/```json|```/g, '').trim();
+      try { results[cat.id] = JSON.parse(clean); }
+      catch { results[cat.id] = { summary: raw || 'No data returned.', items: [], watchlist: [] }; }
+    } catch(e) {
+      results[cat.id] = { summary: 'Unable to fetch data for this category. Check your connection.', items: [], watchlist: [] };
+    }
+    done++;
+  }
+
+  document.getElementById('progress-bar').style.width = '100%';
+  renderDigest(cats, results);
+}
+
+function renderDigest(cats, results) {
+  const content = document.getElementById('digest-content');
+  content.innerHTML = '';
+
+  cats.forEach((cat, i) => {
+    const d = results[cat.id];
+    if (!d) return;
+
+    const block = document.createElement('div');
+    block.className = 'category-block';
+    block.style.animationDelay = (i * 0.07) + 's';
+
+    let itemsHtml = '';
+    (d.items || []).forEach(item => {
+      const u = item.urgency || 'low';
+      itemsHtml += `
+        <div class="news-item ${u}">
+          <div class="news-item-top">
+            <div class="news-title">${esc(item.title)}</div>
+            <span class="urgency-badge ${u}">${u}</span>
+          </div>
+          <div class="news-detail">${esc(item.detail)}</div>
+          ${item.implication ? `<div class="news-implication">${esc(item.implication)}</div>` : ''}
+        </div>`;
+    });
+
+    let watchHtml = '';
+    if (d.watchlist && d.watchlist.length) {
+      watchHtml = `<div class="watchlist">
+        <div class="watchlist-label">👁 Watch</div>
+        ${d.watchlist.map(w => `<div class="watchlist-item">${esc(w)}</div>`).join('')}
+      </div>`;
+    }
+
+    block.innerHTML = `
+      <div class="cat-heading"><span>${cat.icon}</span><h3>${cat.label}</h3></div>
+      ${d.summary ? `<p class="cat-summary">${esc(d.summary)}</p>` : ''}
+      ${itemsHtml}
+      ${watchHtml}`;
+
+    content.appendChild(block);
+  });
+
+  document.getElementById('digest-title').textContent = `Your digest — ${cats.length} topic${cats.length !== 1 ? 's' : ''}`;
+  const now = new Date();
+  updateStamp(now);
+
+  // Save last generated date
+  try { localStorage.setItem('last_digest', now.toISOString()); } catch(e) {}
+
+  showView('digest');
+}
+
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── PWA install prompt ──
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Show banner after 2s if not dismissed before
+  const dismissed = localStorage.getItem('install_dismissed');
+  if (!dismissed) {
+    setTimeout(() => {
+      document.getElementById('install-banner').style.display = 'flex';
+    }, 2000);
+  }
+});
+
+async function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('install-banner').style.display = 'none';
+}
+
+function dismissInstall() {
+  document.getElementById('install-banner').style.display = 'none';
+  try { localStorage.setItem('install_dismissed', '1'); } catch(e) {}
+}
+
+// ── Init ──
+renderGrid();
+updateStamp(null);
+
+// Show last digest date if available
+try {
+  const last = localStorage.getItem('last_digest');
+  if (last) {
+    const d = new Date(last);
+    document.getElementById('stamp').textContent = 'Last generated: ' + d.toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short' });
+  }
+} catch(e) {}
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
